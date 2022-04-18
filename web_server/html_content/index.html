@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </head>
+  <body>
+    <div class="header_parent_00">
+      <h3>Sample: Web Audio Time Stretch</h3>
+      <div id="pager_link_area_top" class="pager_link_area"></div>
+    </div>
+
+    <!-- -->
+    <div id="audio_area_parent" class="audio_area_parent">
+      <div class="card main_ctrl shadow00">
+        <div class="button_area">
+          <button id="loadaudio_button">▽ Load Audio</button>
+        </div>
+        <div class="button_area">
+          <button id="toggle_button">▶ Start</button>
+        </div>
+        <div class="seek_bar_area">
+          <span id="seek_bar_text" class="seek_bar_text">00:00:00.00</span ><input id="seek_bar" class="seek_bar" type="range" value="0" min="0" max="100">
+        </div>
+      </div>
+    </div>
+    <!-- -->
+
+    <div class="footer_parent_00">
+      <div id="pager_link_area_bottom" class="pager_link_area"></div>
+    </div>
+    <script type="module" src="./scripts/main.js"></script>
+  </body>
+</html>
