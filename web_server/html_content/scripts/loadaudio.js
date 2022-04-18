@@ -11,7 +11,6 @@ const fetchAudio = async (file_location = null) => {
   return await response.arrayBuffer()
 }
 
-
 export {
   fetchAudio
 }
