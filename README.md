@@ -2,7 +2,7 @@
 Sample of playing Mp3 file with specifying start time.
 
 ## How to build and develor
-``bash
+```bash
 $ npm install;
 
 // for development
@@ -50,6 +50,6 @@ $ npm run build-prod;
 
 # License
 
-Copyright © 2022, [Ryoya Kawai](https://github.com/ryoyakawai).
+Copyright © 2022, [Ryoya Kawai](https://github.com/ryoyakawai).  
 Released under the [The Apache License Version 2.0](LICENSE).
 
