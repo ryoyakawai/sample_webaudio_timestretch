@@ -5,15 +5,15 @@ Sample of playing Mp3 file with specifying start time.
 ```bash
 $ npm install;
 
-// for development
+# for development
 // these two commands must be run in different terminal
 $ npm run serve;
 $ npm run develop;
 
-// build for development
+# build for development
 $ npm run build;
 
-// build for production
+# build for production
 $ npm run build-prod;
 ```
 
