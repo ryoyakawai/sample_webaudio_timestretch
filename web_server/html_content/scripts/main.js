@@ -21,7 +21,11 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
   const allow_play = async () => {
     wa.a_ctx = new AudioContext()
     console.log('Playback resumed successfully!')
-    wa.arrayBuffer = await fetchAudio(_MP3_URL)
+    try {
+      wa.arrayBuffer = await fetchAudio(_MP3_URL)
+    } catch (err) {
+      console.error(`[ERROR] allow_play: msg=[${JSON.stringify(err)}]`)
+    }
   }
 
   const toggle_display_time = (callback = () => {}) => {
@@ -39,32 +43,46 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
   }
 
   const main = () => {
+    // Get UI elements
     const seek_bar = document.querySelector('#seek_bar')
-    const seek_bar_val = document.querySelector('span#seek_bar_val')
+    //const seek_bar_val = document.querySelector('span#seek_bar_val')
     const seek_bar_text = document.querySelector('span#seek_bar_text')
-    seek_bar.addEventListener('input', (event) => {
-      //seek_bar_val.innerHTML = event.target.value
-    })
-
     const loadaudio_button = document.querySelector('#loadaudio_button')
-    loadaudio_button.addEventListener('mousedown', async () => {
-      loadaudio_button.setAttribute('disabled', 'disabled')
-      await allow_play()
-      toggle_button.removeAttribute('disabled')
-    })
+    const toggle_button = document.querySelector('#toggle_button')
+
+    // Init UI
+    toggle_button.setAttribute('disabled', 'disabled')
 
     const setPausedTime = () => {
-      wa.a_ctx_start_time = wa.a_ctx.currentTime - wa.a_ctx_start_time //- (SEEK_DURATION_MSEC/1000)
+      wa.a_ctx_start_time = wa.a_ctx.currentTime - wa.a_ctx_start_time
     }
 
-    const seek_bar_callback = (current_position=0, duration=0) => {
+    const seek_bar_callback = (current_position = 0, duration = 0) => {
       seek_bar.value = (100 * current_position/duration)
       let [hour, min, sec, msec] = convTimeFormatFromSec(current_position)
       seek_bar_text.innerHTML=`${hour}:${min}:${sec}:${msec}`
     }
-    const toggle_button = document.querySelector('#toggle_button')
-    toggle_button.setAttribute('disabled', 'disabled')
-    toggle_button.addEventListener('mousedown', async (event) => {
+
+    //
+    /*
+    seek_bar.addEventListener('input', (event) => {
+      seek_bar_val.innerHTML = event.target.value
+    })
+    */
+
+    //
+    loadaudio_button.addEventListener('mousedown', async () => {
+      loadaudio_button.setAttribute('disabled', 'disabled')
+      try {
+        await allow_play()
+      } catch (err) {
+        console.error(`[ERROR] allow_play: msg=[${JSON.stringify(err)}]`)
+      }
+      toggle_button.removeAttribute('disabled')
+    })
+
+    //
+    toggle_button.addEventListener('mousedown', async () => {
       if (!isPlaying) {
         toggle_button.innerHTML = '■ Stop'
         wa.source = wa.a_ctx.createBufferSource()

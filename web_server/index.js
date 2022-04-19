@@ -9,7 +9,7 @@ module.exports.startWebServer = async (param_arg_path_to_expose = null) => {
   const express = require('express')
   const app = express()
   const router = express.Router()
-  const util = require('util')
+  // const util = require('util')
 
   try {
     HTTP_PORT = await portfinder.getPortPromise({port: 8080, stopPort:8090})
@@ -36,12 +36,12 @@ module.exports.startWebServer = async (param_arg_path_to_expose = null) => {
   app.use(morgan('combined'))
   app.disable('x-powered-by')
 
-  const server = app.listen( HTTP_PORT, () => {
+  //const server = app.listen( HTTP_PORT, () => {
+  app.listen( HTTP_PORT, () => {
     console.log(' >> App is running in HTTP_PORT=[%s] ', HTTP_PORT)
   })
 
-  let serverRootPath = `${process.cwd()}`
-  let index_file = 'index.html' // { false, <index file name>}
+  const index_file = 'index.html' // { false, <index file name>}
 
   app.use(path_in_url, express.static(path_to_expose, { index: index_file }))
   console.log(' >> [PATH] url=[http://localhost:%s%s] exposed_dir=[%s] path_in_url=[%s]', HTTP_PORT, path_in_url, path_to_expose, path_in_url)
