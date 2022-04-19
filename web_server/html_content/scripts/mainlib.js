@@ -19,7 +19,16 @@ const getGetParams = (getConf={}) => {
   return result
 }
 
+const convTimeFormatFromSec = (current_position = 0) => {
+  const hour = ('00' + parseInt(current_position / 3600)).substr(-2)
+  const min = ('00' + parseInt((current_position / 60) % 60)).substr(-2)
+  const sec = ('00' + parseInt(current_position % 60)).substr(-2)
+  const msec = (String(current_position).split('.').pop()).substr(0, 2)
+  return [hour, min, sec, msec]
+}
+
 export {
-  getGetParams
+  getGetParams,
+  convTimeFormatFromSec
 }
 

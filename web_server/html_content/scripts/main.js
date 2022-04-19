@@ -1,6 +1,7 @@
 "use strict";
 
-import { fetchAudio } from './loadaudio.js';
+import {fetchAudio} from './loadaudio.js';
+import {convTimeFormatFromSec} from './mainlib.js';
 
 const _MP3_URL = './mp3/eine.mp3';
 const SEEK_DURATION_MSEC = 30
@@ -58,10 +59,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 
     const seek_bar_callback = (current_position=0, duration=0) => {
       seek_bar.value = (100 * current_position/duration)
-      let hour = ('00' + parseInt(current_position / 3600)).substr(-2)
-      let min = ('00' + parseInt((current_position / 60) % 60)).substr(-2)
-      let sec = ('00' + parseInt(current_position % 60)).substr(-2)
-      let msec = (String(current_position).split('.').pop()).substr(0, 2)
+      let [hour, min, sec, msec] = convTimeFormatFromSec(current_position)
       seek_bar_text.innerHTML=`${hour}:${min}:${sec}:${msec}`
     }
     const toggle_button = document.querySelector('#toggle_button')
@@ -79,17 +77,17 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
         })
         wa.source.connect(wa.a_ctx.destination)
         wa.source.start(0, wa.a_ctx_paused_time + wa.a_ctx_start_time)
+        setPausedTime()
       } else {
         toggle_button.innerHTML = '▶ Start'
         setPausedTime()
-        wa.source.buffer = null
         wa.source.stop(0)
+        wa.source.buffer = null
       }
       isPlaying = !isPlaying
       toggle_display_time(seek_bar_callback)
     })
   }
-
 
   main()
 

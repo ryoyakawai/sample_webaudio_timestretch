@@ -3,6 +3,11 @@ body {
   font-family: arial;
   background: #e2e1e0;
 }
+h1.shadow {
+  font-size:2.5em;
+  font-weight: bold;
+  text-shadow: #999 2px 2px 5px;
+}
 div.header_parent_00 {
   display: flex;
   flex-direction: column;
