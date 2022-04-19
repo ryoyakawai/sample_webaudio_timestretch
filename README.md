@@ -2,18 +2,18 @@
 Sample of playing Mp3 file with specifying start time.
 
 ## How to build and develor
-``bash
+```bash
 $ npm install;
 
-// for development
-// these two commands must be run in different terminal
+# for development
+# these two commands must be run in different terminal
 $ npm run serve;
 $ npm run develop;
 
-// build for development
+# build for development
 $ npm run build;
 
-// build for production
+# build for production
 $ npm run build-prod;
 ```
 
@@ -50,6 +50,6 @@ $ npm run build-prod;
 
 # License
 
-Copyright © 2022, [Ryoya Kawai](https://github.com/ryoyakawai).
+Copyright © 2022, [Ryoya Kawai](https://github.com/ryoyakawai).  
 Released under the [The Apache License Version 2.0](LICENSE).
 
