@@ -6,7 +6,7 @@ Sample of playing Mp3 file with specifying start time.
 $ npm install;
 
 # for development
-// these two commands must be run in different terminal
+# these two commands must be run in different terminal
 $ npm run serve;
 $ npm run develop;
 
