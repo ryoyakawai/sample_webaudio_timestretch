@@ -52,6 +52,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 
     // Init UI
     toggle_button.setAttribute('disabled', 'disabled')
+    seek_bar.setAttribute('disabled', 'disabled')
 
     const setPausedTime = () => {
       wa.a_ctx_start_time = wa.a_ctx.currentTime - wa.a_ctx_start_time
