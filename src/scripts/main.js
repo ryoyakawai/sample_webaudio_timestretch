@@ -67,7 +67,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 
     //
     seek_bar.addEventListener('input', async (event) => {
-      const duration = wa.source.buffer.duration.toFixed(2)
+      const duration = wa.source.buffer.duration
       const seek_position = duration * event.target.value/100
       wa.a_ctx_paused_time = seek_position
       const [hour, min, sec, msec] = convTimeFormatFromSec(seek_position)
