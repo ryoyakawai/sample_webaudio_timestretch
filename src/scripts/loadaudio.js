@@ -13,6 +13,19 @@ const fetchAudio = async (file_location = null) => {
   }
 }
 
+const decodeAudioDataPromise = async (wa = {} ) => {
+  wa.source = wa.a_ctx.createBufferSource()
+  return new Promise((resolve) => {
+    wa.a_ctx.decodeAudioData(wa.arrayBuffer.slice(), (buf) => {
+      wa.source.buffer = buf
+      wa.source.loop = false;
+      resolve()
+    })
+  })
+}
+
+
 export {
-  fetchAudio
+  fetchAudio,
+  decodeAudioDataPromise
 }
