@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <style>
+     body {
+       font-family: arial;
+       padding: 10px;
+     }
+     div {margin: 10px;}
+     button {
+       font-weight: bold;
+       font-size: 1.0em;
+       width: 100px;
+       height: 50px;
+       border: 1px solid #ddd;
+       border-radius: 5px;
+       background-color: #ddd;
+       box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+       transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+       cursor: pointer;
+     }
+     button:hover {
+       box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+     }
+     button:disabled {
+       color: #aaa;
+       background-color: #ddd;
+       box-shadow: 0 0 0 ;
+     }
+    </style>
+  </head>
+  <body>
+    <h1>Basic Sample for Webkit</h1>
+    <div>
+      <button id="begin">begin</button>
+    </div>
+    <div>
+      <button id="start" disabled>Start</button>
+      <button id="stop" disabled>Stop</button>
+    </div>
+    <script>
+     (async () => {
+
+       const _MP3_URL = './mp3/eine.mp3';
+
+       const begin_button = document.querySelector('#begin');
+       const start_button = document.querySelector('#start');
+       const stop_button = document.querySelector('#stop');
+
+       const toggle_button_disable = (elem = null) => {
+         elem.disabled = !elem.disabled
+       }
+
+       begin_button.addEventListener('mousedown', async () => {
+         const AudioContext = window.AudioContext || window.webkitAudioContext;
+         var context = new AudioContext();
+
+         let source = null
+
+         const res = await fetch(_MP3_URL);
+         const arrayBuffer = await res.arrayBuffer();
+
+         const decodeAudio = (arrayBuffer = []) => {
+           source = context.createBufferSource();
+           return new Promise((resolve, reject) => {
+             context.decodeAudioData(arrayBuffer, (buf) => {
+               source.buffer = buf;
+               source.loop = false;
+               resolve()
+             });
+           });
+         }
+         await decodeAudio(arrayBuffer.slice())
+
+         //
+         start_button.addEventListener('mousedown', async () => {
+           source.connect(context.destination);
+           source.start(0)
+           toggle_button_disable(start_button)
+           toggle_button_disable(stop_button)
+         })
+
+         stop_button.addEventListener('mousedown', async () => {
+           source.stop(0)
+           toggle_button_disable(start_button)
+           toggle_button_disable(stop_button)
+           await decodeAudio(arrayBuffer.slice())
+         })
+
+         console.log('[info] begin() is ready.')
+         toggle_button_disable(begin_button)
+         toggle_button_disable(start_button)
+       })
+
+     })()
+    </script>
+  </body>
+</html>
