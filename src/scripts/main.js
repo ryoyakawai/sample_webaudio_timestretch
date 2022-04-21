@@ -24,10 +24,6 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
   const loadaudio_button = document.querySelector('#loadaudio_button')
   const start_stop_button = document.querySelector('#start_stop_button')
 
-  // Init UI
-  toggle_button_disable(start_stop_button)
-  toggle_button_disable(seek_bar)
-
   const allow_play = async () => {
     wa.a_ctx = new AudioContext()
     try {
@@ -64,6 +60,10 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
   }
 
   const main = () => {
+    // Init UI
+    toggle_button_disable(start_stop_button)
+    toggle_button_disable(seek_bar)
+
     //
     seek_bar.addEventListener('input', async (event) => {
       if (typeof wa.source.buffer.duration !== undefined) {
