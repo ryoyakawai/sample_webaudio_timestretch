@@ -92,6 +92,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
       wa.source = await decodeAudioDataPromise(wa)
       start_stop_button.innerHTML = `▶ Start : ${wa.file_name}`
       toggle_button_disable(start_stop_button)
+      toggle_button_disable(seek_bar)
       toggle_button_disable(playback_rate)
       loadaudio_button.innerHTML = 'Reload Page To Change Music'
     }
