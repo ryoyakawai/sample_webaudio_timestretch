@@ -1,18 +1,24 @@
 "use strict";
 
-const getGetParams = (getConf={}) => {
+const sleep = msec => new Promise(resolve => setTimeout(resolve, msec))
+
+const toggle_button_disable = (elem = null) => {
+  elem.disabled = !elem.disabled
+}
+
+const getGetParams = (getConf = {}) => {
   const keys = Object.keys(getConf)
-  if (keys.length<1) return {}
+  if (keys.length < 1) return {}
   const url = new URL(window.location.href)
   const raw_params = url.searchParams
   let result = {}
-  for (let i=0; i<keys.length; i+=1) {
+  for (let i = 0; i < keys.length; i += 1) {
     switch (getConf[keys[i]]) {
       case 'Number':
         result[keys[i]] = Number(raw_params.get(keys[i]))
         break
       case 'String':
-        result[keys[i]] = raw_params.get(keys[i])==null ? '' : String(raw_params.get(keys[i])).split(' ')
+        result[keys[i]] = raw_params.get(keys[i]) == null ? '' : String(raw_params.get(keys[i])).split(' ')
         break
     }
   }
@@ -29,6 +35,8 @@ const convTimeFormatFromSec = (current_position = 0) => {
 
 
 export {
+  sleep,
+  toggle_button_disable,
   getGetParams,
   convTimeFormatFromSec
 }

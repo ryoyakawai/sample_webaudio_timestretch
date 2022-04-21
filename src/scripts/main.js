@@ -1,7 +1,7 @@
 "use strict";
 
-import {fetchAudio, decodeAudioDataPromise} from './loadaudio.js';
-import {convTimeFormatFromSec} from './mainlib.js';
+import { fetchAudio, decodeAudioDataPromise } from './loadaudio.js';
+import { convTimeFormatFromSec, sleep, toggle_button_disable } from './mainlib.js';
 
 const _MP3_URL = './mp3/eine.mp3';
 const SEEK_DURATION_MSEC = 30
@@ -26,13 +26,13 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
       console.error(`[ERROR] allow_play: msg=[${JSON.stringify(err)}]`)
     }
     console.log(`[message] ${_MP3_URL} is loaded.`)
-    await decodeAudioDataPromise(wa)
-    seek_bar.removeAttribute('disabled')
+    wa.source = await decodeAudioDataPromise(wa)
+    toggle_button_disable(seek_bar)
   }
 
-  const toggle_display_time = (callback = () => {}) => {
+  const toggle_display_time = (callback = () => { }) => {
     if (isPlaying) {
-      seekTimerId = setInterval( () => {
+      seekTimerId = setInterval(() => {
         if (wa.source.buffer !== null) {
           const duration = wa.source.buffer.duration.toFixed(2)
           const current_position = (wa.a_ctx_paused_time + wa.a_ctx.currentTime - wa.a_ctx_start_time).toFixed(4)
@@ -44,6 +44,16 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
     }
   }
 
+  const setPausedTime = () => {
+    wa.a_ctx_start_time = wa.a_ctx.currentTime - wa.a_ctx_start_time
+  }
+
+  const seek_bar_callback = (current_position = 0, duration = 0) => {
+    seek_bar.value = (100 * current_position / duration)
+    const [hour, min, sec, msec] = convTimeFormatFromSec(current_position)
+    seek_bar_text.innerHTML = `${hour}:${min}:${sec}:${msec}`
+  }
+
   const main = () => {
     // Get UI elements
     const seek_bar = document.querySelector('#seek_bar')
@@ -52,53 +62,44 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
     const toggle_button = document.querySelector('#toggle_button')
 
     // Init UI
-    toggle_button.setAttribute('disabled', 'disabled')
-    seek_bar.setAttribute('disabled', 'disabled')
-
-    const setPausedTime = () => {
-      wa.a_ctx_start_time = wa.a_ctx.currentTime - wa.a_ctx_start_time
-    }
-
-    const seek_bar_callback = (current_position = 0, duration = 0) => {
-      seek_bar.value = (100 * current_position/duration)
-      const [hour, min, sec, msec] = convTimeFormatFromSec(current_position)
-      seek_bar_text.innerHTML=`${hour}:${min}:${sec}:${msec}`
-    }
+    toggle_button_disable(toggle_button)
+    toggle_button_disable(seek_bar)
 
     //
     seek_bar.addEventListener('input', async (event) => {
       const duration = wa.source.buffer.duration
-      const seek_position = duration * event.target.value/100
+      const seek_position = duration * event.target.value / 100
       wa.a_ctx_paused_time = seek_position
       const [hour, min, sec, msec] = convTimeFormatFromSec(seek_position)
-      seek_bar_text.innerHTML=`${hour}:${min}:${sec}:${msec}`
+      seek_bar_text.innerHTML = `${hour}:${min}:${sec}:${msec}`
     })
 
     //
     loadaudio_button.addEventListener('mousedown', async () => {
-      loadaudio_button.setAttribute('disabled', 'disabled')
+      toggle_button_disable(loadaudio_button)
       try {
         await allow_play()
       } catch (err) {
-        console.error(`[ERROR] allow_play: msg=[${JSON.stringify(err)}]`)
+        console.error(`[ERROR] loadaudio_button: msg=[${JSON.stringify(err)}]`)
       }
-      toggle_button.removeAttribute('disabled')
+      toggle_button_disable(toggle_button)
     })
 
     //
     toggle_button.addEventListener('mousedown', async () => {
       if (!isPlaying) {
-        seek_bar.setAttribute('disabled', 'disabled')
+        toggle_button_disable(seek_bar)
         toggle_button.innerHTML = '■ Stop'
-        await decodeAudioDataPromise(wa)
+        //wa.source = await decodeAudioDataPromise(wa)
         wa.source.connect(wa.a_ctx.destination)
         wa.source.start(0, wa.a_ctx_paused_time + wa.a_ctx_start_time)
         setPausedTime()
       } else {
         toggle_button.innerHTML = '▶ Start'
         setPausedTime()
-        seek_bar.removeAttribute('disabled')
+        toggle_button_disable(seek_bar)
         wa.source.stop(0)
+        wa.source = await decodeAudioDataPromise(wa)
         //wa.source.buffer = null
       }
       isPlaying = !isPlaying

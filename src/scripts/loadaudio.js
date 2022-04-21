@@ -7,23 +7,25 @@ const fetchAudio = async (file_location = null) => {
 
   try {
     const response = await fetch(file_location)
-    return await response.arrayBuffer()
+    const res_arrayBuffer = await response.arrayBuffer()
+    return res_arrayBuffer
   } catch (err) {
     throw new Error(`[ERROR] fetchAudio: Something Occured during fetchg file. file_location=[${file_location}]`)
   }
 }
 
-const decodeAudioDataPromise = async (wa = {} ) => {
-  wa.source = wa.a_ctx.createBufferSource()
+const decodeAudioDataPromise = async (wa = {}) => {
+  const source = wa.a_ctx.createBufferSource()
+  const arrayBuffer = wa.arrayBuffer.slice()
   return new Promise((resolve) => {
-    wa.a_ctx.decodeAudioData(wa.arrayBuffer.slice(), (buf) => {
-      wa.source.buffer = buf
-      wa.source.loop = false;
-      resolve()
+    wa.a_ctx.decodeAudioData(arrayBuffer, (decodedBuffer) => {
+      source.buffer = decodedBuffer
+      source.loop = false
+      console.log('[info] completed to load audio')
+      resolve(source)
     })
   })
 }
-
 
 export {
   fetchAudio,
