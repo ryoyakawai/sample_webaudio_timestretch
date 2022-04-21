@@ -41,23 +41,28 @@ div.shadow00 {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
+/* seek_bar_area */
 div.button_area {
   margin: 5px;
+  padding-bottom: 10px;
 }
 
-div.seek_bar_area {
+div.seek_bar_area,
+div.playback_rate_area {
   display: flex;
+  align-items: center;
+  margin: 40px 5px 10px 5px;
 }
 
 input.seek_bar {
-  width: 330px;
+  width: 330px !important;
 }
 
-span.seek_bar_text {
+span.seek_bar_text,
+span.playback_rate_text {
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 10px;
 }
-
 
 /* vvv  button  vvv */
 button {
@@ -83,6 +88,30 @@ button:disabled {
 /* ^^^  button  ^^^ */
 
 
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid purple;
+  margin: -7px;
+  cursor: pointer;
+}
+
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  background-color: #cfcfcf;
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+  position:fixed;
+  bottom: 0;
+}
 
 /* MDL */
 .card.main_ctrl {
@@ -91,8 +120,7 @@ button:disabled {
   align-items: center;
   background-color: #fff;
   width: 512px;
-  height: 512px;
-  padding: 10px;
+  padding: 40px 10px;
 }
 
 
