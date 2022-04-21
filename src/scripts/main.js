@@ -58,10 +58,10 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
     const seek_bar = document.querySelector('#seek_bar')
     const seek_bar_text = document.querySelector('span#seek_bar_text')
     const loadaudio_button = document.querySelector('#loadaudio_button')
-    const toggle_button = document.querySelector('#toggle_button')
+    const start_stop_button = document.querySelector('#start_stop_button')
 
     // Init UI
-    toggle_button_disable(toggle_button)
+    toggle_button_disable(start_stop_button)
     toggle_button_disable(seek_bar)
 
     //
@@ -83,25 +83,28 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
       } catch (err) {
         console.error(`[ERROR] loadaudio_button: msg=[${JSON.stringify(err)}]`)
       }
-      toggle_button_disable(toggle_button)
+      toggle_button_disable(start_stop_button)
     })
 
     //
-    toggle_button.addEventListener('mousedown', async () => {
+    start_stop_button.addEventListener('mousedown', async () => {
       if (!isPlaying) {
         toggle_button_disable(seek_bar)
-        toggle_button.innerHTML = '■ Stop'
+        start_stop_button.innerHTML = '■ Stop'
         wa.source.connect(wa.a_ctx.destination)
         wa.source.start(0, wa.a_ctx_paused_time + wa.a_ctx_start_time)
         setPausedTime()
         start_update_display_time(seek_bar_callback)
       } else {
-        toggle_button.innerHTML = '▶ Start'
+        toggle_button_disable(start_stop_button)
+        start_stop_button.innerHTML = '- - - -'
         setPausedTime()
         stop_update_display_time(seek_bar_callback)
         wa.source.stop(0)
         wa.source.buffer = null
         wa.source = await decodeAudioDataPromise(wa)
+        toggle_button_disable(start_stop_button)
+        start_stop_button.innerHTML = '▶ Start'
         toggle_button_disable(seek_bar)
       }
       isPlaying = !isPlaying
