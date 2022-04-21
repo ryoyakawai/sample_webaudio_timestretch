@@ -11,7 +11,7 @@
         "portfinder": "^1.0.28"
     },
     "scripts": {
-        "lint": "eslint web_server/*.js web_server/**/*.js",
+        "lint": "eslint src/**/*.js web_server/*.js web_server/**/*.js",
         "serve": "node web_server/index.js",
         "develop": "npx webpack --mode=development --watch",
         "build": "npm run lint && npx webpack --mode=development",
