@@ -36,7 +36,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
       console.log(`[message] ${_MP3_URL} is loaded.`)
       wa.source = await decodeAudioDataPromise(wa)
       toggle_button_disable(seek_bar)
-      loadaudio_button.innerHTML = 'Reload Page To Change Music'
+      loadaudio_button.innerHTML = '🔄 Reload Page To Change Music'
     } catch (err) {
       console.error(`[ERROR] allow_play: msg=[${JSON.stringify(err)}]`)
     }

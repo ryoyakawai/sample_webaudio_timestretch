@@ -84,6 +84,7 @@ button:disabled {
   color: #aaa;
   background-color: #ddd;
   box-shadow: 0 0 0 ;
+  cursor: default;
 }
 /* ^^^  button  ^^^ */
 
