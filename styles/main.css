@@ -3,6 +3,45 @@ body {
   font-family: arial;
   background: #e2e1e0;
 }
+
+
+/* smaller than */
+@media only screen and (max-width: 560px) {
+  body {
+    padding: 0px;
+  }
+  h1.top-title {
+    /*font-size: 2.5em !important;*/
+    display: inline;
+  }
+  div.shadow00 {
+    box-shadow: unset;
+  }
+  .content-parent {
+    margin: 0px;
+    justify-content: flex-start;
+    padding: 0px;
+  }
+  .footer {
+    position:fixed;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+/* larger than */
+@media only screen and (min-width: 560px) {
+  body {
+    background-color: #e2e1e0;
+  }
+  .content-parent {
+    justify-content: center;
+  }
+  div.shadow00 {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+}
+
 h1.shadow {
   font-size:2.5em;
   font-weight: bold;
@@ -35,10 +74,6 @@ div.audio_area_parent {
 div.main_area {
   width: 80%;
   height: 80%;
-}
-
-div.shadow00 {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 /* seek_bar_area */
