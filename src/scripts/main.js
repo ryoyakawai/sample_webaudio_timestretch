@@ -91,7 +91,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
       console.log(`[message] ${file.name} is loaded.`)
       wa.source = await decodeAudioDataPromise(wa)
       start_stop_button.innerHTML = `▶ Start : ${wa.file_name}`
-      toggle_button_disable([start_stop_button], seek_bar, playback_rate)
+      toggle_button_disable([start_stop_button, seek_bar, playback_rate])
       loadaudio_button.innerHTML = 'Reload Page To Change Music'
     }
     reader.readAsArrayBuffer(file)

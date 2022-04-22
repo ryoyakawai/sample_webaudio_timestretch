@@ -5,7 +5,7 @@ const sleep = msec => new Promise(resolve => setTimeout(resolve, msec))
 const toggle_button_disable = (elem = null) => {
   if (Array.isArray(elem)) {
     elem.forEach( item => {
-      item.disabled = !elem.disabled
+      item.disabled = !item.disabled
     })
   } else {
     elem.disabled = !elem.disabled
