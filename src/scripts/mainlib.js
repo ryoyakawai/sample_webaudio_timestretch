@@ -3,7 +3,13 @@
 const sleep = msec => new Promise(resolve => setTimeout(resolve, msec))
 
 const toggle_button_disable = (elem = null) => {
-  elem.disabled = !elem.disabled
+  if (Array.isArray(elem)) {
+    elem.forEach( item => {
+      item.disabled = !elem.disabled
+    })
+  } else {
+    elem.disabled = !elem.disabled
+  }
 }
 
 const getGetParams = (getConf = {}) => {

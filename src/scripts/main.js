@@ -91,9 +91,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
       console.log(`[message] ${file.name} is loaded.`)
       wa.source = await decodeAudioDataPromise(wa)
       start_stop_button.innerHTML = `▶ Start : ${wa.file_name}`
-      toggle_button_disable(start_stop_button)
-      toggle_button_disable(seek_bar)
-      toggle_button_disable(playback_rate)
+      toggle_button_disable([start_stop_button], seek_bar, playback_rate)
       loadaudio_button.innerHTML = 'Reload Page To Change Music'
     }
     reader.readAsArrayBuffer(file)
@@ -101,9 +99,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 
   const main = () => {
     // Init UI
-    toggle_button_disable(start_stop_button)
-    toggle_button_disable(seek_bar)
-    toggle_button_disable(playback_rate)
+    toggle_button_disable([start_stop_button, seek_bar, playback_rate])
 
     //
     seek_bar.addEventListener('input', async (event) => {
@@ -122,14 +118,10 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
     })
     playback_rate.addEventListener('change', async (event) => {
       start_stop_button.innerHTML = `Processing ${wa.file_name}...`
-      toggle_button_disable(start_stop_button)
-      toggle_button_disable(seek_bar)
-      toggle_button_disable(playback_rate)
+      toggle_button_disable([start_stop_button, seek_bar, playback_rate])
       wa.source = await decodeAudioDataStretchPromise(wa, event.target.value, false)
       start_stop_button.innerHTML = `▶ Start : ${wa.file_name}`
-      toggle_button_disable(start_stop_button)
-      toggle_button_disable(seek_bar)
-      toggle_button_disable(playback_rate)
+      toggle_button_disable([start_stop_button, seek_bar, playback_rate])
     })
 
     //
@@ -140,8 +132,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
       toggle_button_disable(loadaudio_button)
       try {
         await allow_play()
-        toggle_button_disable(start_stop_button)
-        toggle_button_disable(playback_rate)
+        toggle_button_disable([start_stop_button, playback_rate])
       } catch (err) {
         console.error(`[ERROR] loadaudio_button: msg=[${JSON.stringify(err)}]`)
       }
@@ -150,8 +141,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
     //
     start_stop_button.addEventListener('mousedown', async () => {
       if (!isPlaying) {
-        toggle_button_disable(seek_bar)
-        toggle_button_disable(playback_rate)
+        toggle_button_disable([seek_bar, playback_rate])
         start_stop_button.innerHTML = `■ Stop : ${wa.file_name}`
         wa.source.connect(wa.a_ctx.destination)
         wa.source.start(0, wa.a_ctx_paused_time + wa.a_ctx_start_time)
@@ -166,9 +156,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
         wa.source.buffer = null
         wa.source = await decodeAudioDataPromise(wa)
         start_stop_button.innerHTML = `▶ Start : ${wa.file_name}`
-        toggle_button_disable(start_stop_button)
-        toggle_button_disable(seek_bar)
-        toggle_button_disable(playback_rate)
+        toggle_button_disable([start_stop_button, seek_bar, playback_rate])
       }
       isPlaying = !isPlaying
     })
