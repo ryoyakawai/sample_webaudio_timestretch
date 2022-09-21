@@ -1,5 +1,5 @@
 "use strict";
-import { doStretch } from './kali_wrapper.js';
+import { doStretch, doStretchPromise } from './kali_wrapper.js';
 
 const fetchAudio = async (file_location = null) => {
   if (file_location == null) {
@@ -28,17 +28,24 @@ const decodeAudioDataPromise = async (wa = {}) => {
   })
 }
 
-const decodeAudioDataStretchPromise = async (wa = {}, rate = 1, quickseek = true) => {
+const decodeAudioDataStretchPromise = (wa = {}, rate = 1, quickseek = true) => {
   const source = wa.a_ctx.createBufferSource()
   const arrayBuffer = wa.arrayBuffer.slice()
+  const numChannels = 1
   return new Promise((resolve) => {
-    wa.a_ctx.decodeAudioData(arrayBuffer, (decodedBuffer) => {
+    wa.a_ctx.decodeAudioData(arrayBuffer, async (decodedBuffer) => {
+
       // do stretch
       console.log('[info] begin stretch and load audio')
-      const inputData_0 = decodedBuffer.getChannelData(0);
-      const inputData_1 = decodedBuffer.getChannelData(1);
-      const output_0 = doStretch(wa.a_ctx, inputData_0, parseFloat(rate), 1, quickseek);
-      const output_1 = doStretch(wa.a_ctx, inputData_1, parseFloat(rate), 1, quickseek);
+      const inputData_0 = await decodedBuffer.getChannelData(0);
+      const inputData_1 = await decodedBuffer.getChannelData(1);
+
+      const promises = [
+        doStretchPromise(wa.a_ctx, inputData_0, parseFloat(rate), numChannels, quickseek),
+        doStretchPromise(wa.a_ctx, inputData_1, parseFloat(rate), numChannels, quickseek)
+      ]
+      const output = await Promise.allSettled(promises)
+      const [output_0, output_1] = [output[0].value, output[1].value]
 
       const outputAudioBuffer = wa.a_ctx.createBuffer(2, output_0.length, wa.a_ctx.sampleRate)
       outputAudioBuffer.getChannelData(0).set(output_0)
